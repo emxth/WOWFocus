@@ -22,4 +22,8 @@ public class Student
 
     // Auto sequence within registered year
     public int Sequence { get; set; }
+
+    public bool IsArchived { get; set; }
+
+    public DateTime? ArchivedAt { get; set; }
 }

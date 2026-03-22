@@ -100,4 +100,26 @@ public class StudentsController : Controller
         await _service.DeleteAsync(id);
         return RedirectToAction(nameof(Index));
     }
+
+    public async Task<IActionResult> Archived()
+    {
+        var students = await _service.GetArchivedAsync();
+        return View(students);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Archive(Guid id)
+    {
+        await _service.ArchiveAsync(id);
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Restore(Guid id)
+    {
+        await _service.RestoreAsync(id);
+        return RedirectToAction(nameof(Archived));
+    }
 }

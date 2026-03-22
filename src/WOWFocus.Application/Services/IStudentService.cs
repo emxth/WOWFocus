@@ -13,7 +13,11 @@ public class StudentService : IStudentService
         _repo = repo;
     }
 
-    public Task<IReadOnlyList<Student>> GetAllAsync() => _repo.GetAllAsync();
+    public async Task<IReadOnlyList<Student>> GetAllAsync()
+        => (await _repo.GetAllAsync()).Where(s => !s.IsArchived).ToList();
+
+    public async Task<IReadOnlyList<Student>> GetArchivedAsync()
+        => (await _repo.GetAllAsync()).Where(s => s.IsArchived).ToList();
 
     public Task<Student?> GetByIdAsync(Guid id) => _repo.GetByIdAsync(id);
 
@@ -40,7 +44,9 @@ public class StudentService : IStudentService
             Gender = request.Gender,
             BirthYear = birthYear,
             RegisteredYear = registeredYear,
-            Sequence = nextSequence
+            Sequence = nextSequence,
+            IsArchived = false,
+            ArchivedAt = null
         };
 
         student.StudentId = BuildStudentId(student.RegisteredYear, student.BirthYear, student.Gender, student.Sequence);
@@ -77,6 +83,51 @@ public class StudentService : IStudentService
 
         await _repo.DeleteAsync(id);
         return true;
+    }
+
+
+    // Archive a student by ID (soft delete)
+    public async Task<bool> ArchiveAsync(Guid id)
+    {
+        var student = await _repo.GetByIdAsync(id);
+        if (student == null) return false;
+
+        student.IsArchived = true;
+        student.ArchivedAt = DateTime.UtcNow;
+
+        await _repo.UpdateAsync(student);
+        return true;
+    }
+
+    // Restore an archived student by ID
+    public async Task<bool> RestoreAsync(Guid id)
+    {
+        var student = await _repo.GetByIdAsync(id);
+        if (student == null) return false;
+
+        student.IsArchived = false;
+        student.ArchivedAt = null;
+
+        await _repo.UpdateAsync(student);
+        return true;
+    }
+
+
+    // Permanently delete archived students that have been archived for longer than the specified retention period
+    public async Task<int> PurgeExpiredArchivedAsync(int retentionDays)
+    {
+        var all = await _repo.GetAllAsync();
+        var cutoff = DateTime.UtcNow.AddDays(-retentionDays);
+
+        var toDelete = all
+            .Where(s => s.IsArchived && s.ArchivedAt.HasValue && s.ArchivedAt.Value <= cutoff)
+            .Select(s => s.Id)
+            .ToList();
+
+        foreach (var id in toDelete)
+            await _repo.DeleteAsync(id);
+
+        return toDelete.Count;
     }
 
 

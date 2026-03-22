@@ -32,6 +32,11 @@
                     <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@s.Id">View</a>
                     <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@s.Id">Edit</a>
                     <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@s.Id">Delete</a>
+
+                    <form asp-action="Archive" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@s.Id" />
+                        <button class="btn btn-sm btn-outline-secondary">Archive</button>
+                    </form>
                 </td>
             </tr>
         }
