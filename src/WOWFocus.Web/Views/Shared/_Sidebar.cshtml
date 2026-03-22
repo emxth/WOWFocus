@@ -1,0 +1,41 @@
+﻿@{
+    bool Can(string perm) => User.HasClaim("perm", perm);
+}
+
+<nav class="nav flex-column p-3">
+    <div class="fw-bold text-uppercase text-muted mb-2">Student Management</div>
+
+    @if (Can("students.view"))
+    {
+        <a class="nav-link" asp-controller="Students" asp-action="Index">Student List</a>
+    }
+    @if (Can("students.create"))
+    {
+        <a class="nav-link" asp-controller="Students" asp-action="Create">Add New</a>
+    }
+    @if (Can("students.archive"))
+    {
+        <a class="nav-link" asp-controller="Students" asp-action="Archived">Archived</a>
+    }
+
+    <hr />
+
+    <div class="fw-bold text-uppercase text-muted mb-2">Teacher Management</div>
+    @if (Can("teachers.view"))
+    {
+        <a class="nav-link" asp-controller="Teachers" asp-action="Index">Teacher List</a>
+    }
+    @if (Can("teachers.create"))
+    {
+        <a class="nav-link" asp-controller="Teachers" asp-action="Create">Add New</a>
+    }
+
+    <hr />
+
+    <div class="fw-bold text-uppercase text-muted mb-2">Administrative</div>
+    @if (Can("admin.manage"))
+    {
+        <a class="nav-link" asp-controller="AdminUsers" asp-action="Index">Users</a>
+        <a class="nav-link" asp-controller="AdminRoles" asp-action="Index">Roles</a>
+    }
+</nav>
