@@ -1,41 +1,95 @@
 ﻿@{
     bool Can(string perm) => User.HasClaim("perm", perm);
+
+    string currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    string currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+
+    bool IsActive(string controller, string action)
+        => string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase)
+           && string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase);
+
+    string ActiveClass(string controller, string action) => IsActive(controller, action) ? "active fw-bold" : "";
 }
 
-<nav class="nav flex-column p-3">
-    <div class="fw-bold text-uppercase text-muted mb-2">Student Management</div>
+<nav class="p-3">
+    <div class="accordion" id="sidebarAccordion">
 
-    @if (Can("students.view"))
-    {
-        <a class="nav-link" asp-controller="Students" asp-action="Index">Student List</a>
-    }
-    @if (Can("students.create"))
-    {
-        <a class="nav-link" asp-controller="Students" asp-action="Create">Add New</a>
-    }
-    @if (Can("students.archive"))
-    {
-        <a class="nav-link" asp-controller="Students" asp-action="Archived">Archived</a>
-    }
+        <!-- Student Management -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingStudents">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseStudents">
+                    Student Management
+                </button>
+            </h2>
+            <div id="collapseStudents" class="accordion-collapse collapse show" data-bs-parent="#sidebarAccordion">
+                <div class="accordion-body p-0">
+                    <div class="nav flex-column">
+                        @if (Can("students.view"))
+                        {
+                            <a class="nav-link @ActiveClass("Students", "Index")"
+                               asp-controller="Students" asp-action="Index">Student List</a>
+                        }
+                        @if (Can("students.create"))
+                        {
+                            <a class="nav-link @ActiveClass("Students", "Create")"
+                               asp-controller="Students" asp-action="Create">Add New</a>
+                        }
+                        @if (Can("students.archive"))
+                        {
+                            <a class="nav-link @ActiveClass("Students", "Archived")"
+                               asp-controller="Students" asp-action="Archived">Archived</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <hr />
+        <!-- Teacher Management -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTeachers">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTeachers">
+                    Teacher Management
+                </button>
+            </h2>
+            <div id="collapseTeachers" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
+                <div class="accordion-body p-0">
+                    <div class="nav flex-column">
+                        @if (Can("teachers.view"))
+                        {
+                            <a class="nav-link @ActiveClass("Teachers", "Index")"
+                               asp-controller="Teachers" asp-action="Index">Teacher List</a>
+                        }
+                        @if (Can("teachers.create"))
+                        {
+                            <a class="nav-link @ActiveClass("Teachers", "Create")"
+                               asp-controller="Teachers" asp-action="Create">Add New</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <div class="fw-bold text-uppercase text-muted mb-2">Teacher Management</div>
-    @if (Can("teachers.view"))
-    {
-        <a class="nav-link" asp-controller="Teachers" asp-action="Index">Teacher List</a>
-    }
-    @if (Can("teachers.create"))
-    {
-        <a class="nav-link" asp-controller="Teachers" asp-action="Create">Add New</a>
-    }
+        <!-- Administrative -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingAdmin">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdmin">
+                    Administrative
+                </button>
+            </h2>
+            <div id="collapseAdmin" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
+                <div class="accordion-body p-0">
+                    <div class="nav flex-column">
+                        @if (Can("admin.manage"))
+                        {
+                            <a class="nav-link @ActiveClass("AdminUsers", "Index")"
+                               asp-controller="AdminUsers" asp-action="Index">Users</a>
+                            <a class="nav-link @ActiveClass("AdminRoles", "Index")"
+                               asp-controller="AdminRoles" asp-action="Index">Roles</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <hr />
-
-    <div class="fw-bold text-uppercase text-muted mb-2">Administrative</div>
-    @if (Can("admin.manage"))
-    {
-        <a class="nav-link" asp-controller="AdminUsers" asp-action="Index">Users</a>
-        <a class="nav-link" asp-controller="AdminRoles" asp-action="Index">Roles</a>
-    }
+    </div>
 </nav>

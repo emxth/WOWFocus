@@ -46,13 +46,22 @@
 
     <div class="container-fluid">
         <div class="row">
-            <aside class="col-12 col-md-3 col-lg-2 border-end bg-light min-vh-100">
-                @await Html.PartialAsync("_Sidebar")
-            </aside>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <aside class="col-12 col-md-3 col-lg-2 border-end bg-light min-vh-100">
+                    @await Html.PartialAsync("_Sidebar")
+                </aside>
 
-            <main role="main" class="col-12 col-md-9 col-lg-10 pb-3 pt-3">
-                @RenderBody()
-            </main>
+                <main role="main" class="col-12 col-md-9 col-lg-10 pb-3 pt-3">
+                    @RenderBody()
+                </main>
+            }
+            else
+            {
+                <main role="main" class="col-12 pb-3 pt-3">
+                    @RenderBody()
+                </main>
+            }
         </div>
     </div>
 

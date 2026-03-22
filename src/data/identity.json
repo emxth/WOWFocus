@@ -1,0 +1,46 @@
+{
+  "Users": [
+    {
+      "Id": "8bcf6662-7880-4ab7-8496-08cd5a0f24df",
+      "UserName": "admin",
+      "PasswordHash": "AQAAAAIAAYagAAAAEBymsXj05hFPFb/aVx2JHGWxWB/pOSLiUnznH6KILpPBYO/mdFWZ2yLk155406THjw==",
+      "Roles": [
+        "Admin"
+      ]
+    },
+    {
+      "Id": "cf27de06-2141-403f-96da-fb10f079835d",
+      "UserName": "teacher",
+      "PasswordHash": "AQAAAAIAAYagAAAAEE/\u002BTo/nJ1ioTvApHysvDVvhtJJEIVmYelVf9ks24hx9aD1Zd5851pga\u002BPhOtFH77w==",
+      "Roles": [
+        "Teacher"
+      ]
+    }
+  ],
+  "Roles": [
+    {
+      "Name": "Admin",
+      "Permissions": [
+        "admin.manage",
+        "students.view",
+        "students.create",
+        "students.edit",
+        "students.delete",
+        "students.archive",
+        "teachers.view",
+        "teachers.create"
+      ]
+    },
+    {
+      "Name": "Teacher",
+      "Permissions": [
+        "students.view",
+        "students.create",
+        "students.edit",
+        "students.delete",
+        "students.archive",
+        "teachers.view"
+      ]
+    }
+  ]
+}

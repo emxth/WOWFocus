@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using WOWFocus.Application.Interfaces;
 using WOWFocus.Application.Services;
 using WOWFocus.Infrastructure.Repositories;
+using WOWFocus.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ builder.Services.AddControllersWithViews();
 var identityFile = builder.Configuration["JsonStorage:IdentityFile"]!;
 builder.Services.AddScoped<IIdentityRepository>(_ => new JsonIdentityRepository(identityFile));
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<IdentitySeeder>();
 builder.Services.AddScoped<IdentityAdminService>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -28,6 +30,12 @@ builder.Services.AddAuthorization(options =>
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<IdentitySeeder>();
+    await seeder.SeedAsync();
+}
 
 app.UseStaticFiles();
 app.UseRouting();
