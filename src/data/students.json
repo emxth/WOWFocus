@@ -10,17 +10,5 @@
     "Sequence": 1,
     "IsArchived": false,
     "ArchivedAt": null
-  },
-  {
-    "Id": "edef4ac3-1718-44f9-b831-735eaa609fd0",
-    "StudentId": "2026200610002",
-    "FullName": "Test Student 2",
-    "DateOfBirth": "2006-03-22T00:00:00",
-    "BirthYear": 2006,
-    "RegisteredYear": 2026,
-    "Gender": 1,
-    "Sequence": 2,
-    "IsArchived": false,
-    "ArchivedAt": null
   }
 ]
