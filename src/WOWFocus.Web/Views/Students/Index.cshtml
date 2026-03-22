@@ -1,0 +1,39 @@
+﻿@model IReadOnlyList<WOWFocus.Domain.Entities.Student>
+
+@{
+    ViewData["Title"] = "Students";
+}
+
+<h2>Students</h2>
+
+<a class="btn btn-primary mb-3" asp-action="Create">Add Student</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Student ID</th>
+            <th>Full Name</th>
+            <th>Birth Year</th>
+            <th>Gender</th>
+            <th>Registered Year</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var s in Model)
+        {
+            <tr>
+                <td>@s.StudentId</td>
+                <td>@s.FullName</td>
+                <td>@s.BirthYear</td>
+                <td>@s.Gender</td>
+                <td>@s.RegisteredYear</td>
+                <td>
+                    <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@s.Id">View</a>
+                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@s.Id">Edit</a>
+                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@s.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
