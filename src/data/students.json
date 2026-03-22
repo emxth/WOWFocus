@@ -1,0 +1,12 @@
+[
+  {
+    "Id": "93ad7873-5d3c-4190-acea-f09865ca7f21",
+    "StudentId": "2026200320001",
+    "FullName": "Test Student 1",
+    "DateOfBirth": "2003-11-05T00:00:00",
+    "BirthYear": 2003,
+    "RegisteredYear": 2026,
+    "Gender": 2,
+    "Sequence": 1
+  }
+]
