@@ -1,0 +1,26 @@
+﻿@model List<WOWFocus.Domain.Identity.AppRole>
+
+<h2>Roles</h2>
+<a class="btn btn-primary mb-2" asp-action="Create">Add Role</a>
+
+<table class="table">
+    <thead>
+        <tr><th>Name</th><th>Permissions</th><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.Name</td>
+                <td>@string.Join(", ", r.Permissions)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@r.Name" class="btn btn-sm btn-warning">Edit</a>
+                    <form asp-action="Delete" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@r.Name" />
+                        <button class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

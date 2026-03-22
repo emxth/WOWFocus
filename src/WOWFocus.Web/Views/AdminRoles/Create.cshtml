@@ -1,0 +1,24 @@
+﻿@model WOWFocus.Web.ViewModels.RoleEditViewModel
+
+<h2>Create Role</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label class="form-label">Role Name</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Permissions</label>
+        @foreach (var perm in Model.AvailablePermissions)
+        {
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       name="SelectedPermissions" value="@perm" />
+                <label class="form-check-label">@perm</label>
+            </div>
+        }
+    </div>
+
+    <button class="btn btn-success">Save</button>
+</form>
